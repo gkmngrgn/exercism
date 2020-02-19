@@ -1,0 +1,18 @@
+pub fn is_valid(code: &str) -> bool {
+    let code = code.replace(" ", "");
+    let digits: Vec<u32> = code.chars().filter_map(|c| c.to_digit(10)).collect();
+    if code.len() != digits.len() || digits.len() <= 1 {
+        return false;
+    }
+    let sum: u32 = digits
+        .iter()
+        .rev()
+        .enumerate()
+        .map(|(i, &d)| match d {
+            n if i % 2 == 0 => n,
+            n if n < 5 => n * 2,
+            n => n * 2 - 9,
+        })
+        .sum();
+    sum % 10 == 0
+}

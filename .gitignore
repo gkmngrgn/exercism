@@ -1,0 +1,11 @@
+.exercism
+
+# Rust
+rust/**/.gitignore
+rust/**/*.rs.bk
+rust/**/target/
+rust/**/Cargo.lock
+
+# Dart
+
+# Lisp
