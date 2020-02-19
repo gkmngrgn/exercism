@@ -7,5 +7,11 @@ rust/**/target/
 rust/**/Cargo.lock
 
 # Dart
+dart/**/.gitignore
+dart/**/.dart_tool/
+dart/**/.packages
+dart/**/build/
+dart/**/pubspec.lock
+dart/**/*.js
 
 # Lisp
