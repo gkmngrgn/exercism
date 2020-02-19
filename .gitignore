@@ -15,3 +15,21 @@ dart/**/pubspec.lock
 dart/**/*.js
 
 # Lisp
+common-lisp/**/.gitignore
+common-lisp/**/*.FASL
+common-lisp/**/*.fasl
+common-lisp/**/*.lisp-temp
+common-lisp/**/*.dfsl
+common-lisp/**/*.pfsl
+common-lisp/**/*.d64fsl
+common-lisp/**/*.p64fsl
+common-lisp/**/*.lx64fsl
+common-lisp/**/*.lx32fsl
+common-lisp/**/*.dx64fsl
+common-lisp/**/*.dx32fsl
+common-lisp/**/*.fx64fsl
+common-lisp/**/*.fx32fsl
+common-lisp/**/*.sx64fsl
+common-lisp/**/*.sx32fsl
+common-lisp/**/*.wx64fsl
+common-lisp/**/*.wx32fsl
