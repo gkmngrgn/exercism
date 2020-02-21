@@ -1,13 +1,12 @@
 class PascalsTriangle {
-  List<List<int>> rows(int count) {
-    List<List<int>> result = [];
-    List<int> floor = [1];
-    for (int i = 0; i < count; i++) {
-      result.add(floor);
-      floor = floor + [0];
-      floor = List<int>.generate(
-          floor.length, (x) => floor[x] + floor.reversed.toList()[x]);
-    }
-    return result;
-  }
+  List<List<int>> rows(int count) => Iterable<int>.generate(count).fold(
+      [],
+      (rows, i) => (rows.isEmpty)
+          ? [
+              [1]
+            ]
+          : rows + [this.getNextRow(rows.last, i + 1)]);
+
+  List<int> getNextRow(List<int> row, int len) =>
+      List<int>.generate(len, (x) => (row + [0])[x] + ([0] + row)[x]);
 }
