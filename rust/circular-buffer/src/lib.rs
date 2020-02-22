@@ -14,7 +14,7 @@ pub enum Error {
 impl<T> CircularBuffer<T> {
     pub fn new(capacity: usize) -> Self {
         Self {
-            capacity: capacity,
+            capacity,
             field: VecDeque::with_capacity(capacity),
         }
     }
@@ -28,7 +28,7 @@ impl<T> CircularBuffer<T> {
     }
 
     pub fn read(&mut self) -> Result<T, Error> {
-        if self.field.len() == 0 {
+        if self.field.is_empty() {
             return Err(Error::EmptyBuffer);
         }
         Ok(self.field.pop_front().unwrap())
