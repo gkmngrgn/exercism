@@ -11,7 +11,7 @@ pub enum Error {
     FullBuffer,
 }
 
-impl<T: std::clone::Clone> CircularBuffer<T> {
+impl<T> CircularBuffer<T> {
     pub fn new(capacity: usize) -> Self {
         Self {
             capacity: capacity,
@@ -39,12 +39,9 @@ impl<T: std::clone::Clone> CircularBuffer<T> {
     }
 
     pub fn overwrite(&mut self, element: T) {
-        match self.write(element.clone()) {
-            Ok(r) => r,
-            Err(_) => {
-                self.field.pop_front();
-                self.field.push_back(element)
-            }
+        if self.field.len() == self.capacity {
+            self.field.pop_front();
         }
+        self.write(element).unwrap()
     }
 }
