@@ -66,15 +66,42 @@ impl<T> Cursor<'_, T> {
     }
 
     pub fn next(&mut self) -> Option<&mut T> {
-        unimplemented!()
+        unsafe { self.node = self.node.and_then(|node| node.as_ref().next) };
+        self.peek_mut()
     }
 
     pub fn prev(&mut self) -> Option<&mut T> {
-        unimplemented!()
+        unsafe { self.node = self.node.and_then(|node| node.as_ref().prev) };
+        self.peek_mut()
     }
 
     pub fn take(&mut self) -> Option<T> {
-        unimplemented!()
+        if self.list.length == 0 {
+            return None;
+        }
+        self.list.length -= 1;
+
+        unsafe {
+            let node = self.node.unwrap();
+            let next;
+            if let Some(mut n) = node.as_ref().next {
+                n.as_mut().prev = node.as_ref().prev;
+                next = node.as_ref().next;
+            } else if let Some(mut n) = node.as_ref().prev {
+                n.as_mut().next = node.as_ref().next;
+                next = node.as_ref().prev;
+            } else {
+                return None;
+            }
+            if self.node == self.list.front {
+                self.list.front = node.as_ref().next;
+            } else if self.node == self.list.back {
+                self.list.back = node.as_ref().prev;
+            }
+            let data = Box::from_raw(self.node.take().unwrap().as_ptr()).data;
+            self.node = next;
+            Some(data)
+        }
     }
 
     pub fn insert_after(&mut self, _element: T) {
@@ -95,6 +122,11 @@ impl<'a, T> Iterator for Iter<'a, T> {
     type Item = &'a T;
 
     fn next(&mut self) -> Option<&'a T> {
-        unimplemented!()
+        unsafe {
+            self.node.map(|node| {
+                self.node = node.as_ref().next;
+                &(*node.as_ptr()).data
+            })
+        }
     }
 }
