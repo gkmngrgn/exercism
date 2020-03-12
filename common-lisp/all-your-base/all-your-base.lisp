@@ -1,0 +1,32 @@
+(in-package #:cl-user)
+(defpackage #:all-your-base
+  (:use #:common-lisp)
+  (:export #:rebase))
+
+(in-package #:all-your-base)
+
+(defun base-10 (list-digits in-base)
+  (let ((sums (mapcar (lambda (index digit)
+                        (* digit (expt in-base index)))
+                      (loop for i from 0 below (length list-digits)
+                         collect i)
+                      (reverse list-digits))))
+    (reduce #'+ sums)))
+
+(defun base-n (value out-base out-digits)
+  (if (zerop value)
+      (or out-digits '(0))
+      (multiple-value-bind (val digit)
+          (floor value out-base)
+        (base-n val out-base (push digit out-digits)))))
+
+(defun rebase (list-digits in-base out-base)
+  (if (and (>= in-base 2)
+           (>= out-base 2)
+           (null (remove-if-not (lambda (d)
+                                  (or (< d 0)
+                                      (>= d in-base)))
+                                list-digits)))
+      (let ((value (base-10 list-digits in-base)))
+        (base-n value out-base '()))
+      nil))
