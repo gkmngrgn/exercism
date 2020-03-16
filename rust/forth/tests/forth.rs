@@ -275,7 +275,6 @@ fn can_use_different_words_with_the_same_name() {
 }
 
 #[test]
-#[ignore]
 fn can_define_word_that_uses_word_with_the_same_name() {
     let mut f = Forth::new();
     assert!(f.eval(": foo 10 ;").is_ok());
@@ -285,14 +284,12 @@ fn can_define_word_that_uses_word_with_the_same_name() {
 }
 
 #[test]
-#[ignore]
 fn defining_a_number() {
     let mut f = Forth::new();
     assert_eq!(Err(Error::InvalidWord), f.eval(": 1 2 ;"));
 }
 
 #[test]
-#[ignore]
 fn malformed_word_definition() {
     let mut f = Forth::new();
     assert_eq!(Err(Error::InvalidWord), f.eval(":"));
@@ -301,7 +298,6 @@ fn malformed_word_definition() {
 }
 
 #[test]
-#[ignore]
 fn calling_non_existing_word() {
     let mut f = Forth::new();
     assert_eq!(Err(Error::UnknownWord), f.eval("1 foo"));

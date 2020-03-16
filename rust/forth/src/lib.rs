@@ -95,7 +95,7 @@ impl Forth {
     }
 
     fn parse_input(&mut self, input: &str) -> Vec<InputElement> {
-        if input.starts_with(":") && input.ends_with(";") {
+        if input.starts_with(":") {
             vec![InputElement::Definition(input.to_lowercase())]
         } else {
             input
@@ -177,11 +177,17 @@ impl Forth {
     }
 
     fn define(&mut self, input: String) -> ForthResult {
+        if !input.ends_with(";") {
+            return Err(Error::InvalidWord);
+        }
         let input: Vec<String> = input[2..input.len() - 2]
             .split(" ")
             .map(|c| c.to_string())
             .collect();
         let command = &input.first().unwrap();
+        if let Ok(_) = command.parse::<Value>() {
+            return Err(Error::InvalidWord);
+        }
         let args: Vec<String> = input.iter().skip(1).map(|c| c.to_string()).collect();
         self.definitions.insert(command.to_string(), args);
         Ok(())
