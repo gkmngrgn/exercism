@@ -63,6 +63,7 @@ impl Action for Method {
     }
 }
 
+#[derive(Default)]
 pub struct Forth {
     stack: Vec<Value>,
     definitions: HashMap<String, Vec<String>>,
@@ -95,12 +96,12 @@ impl Forth {
     }
 
     fn parse_input(&mut self, input: &str) -> Vec<InputElement> {
-        if input.starts_with(":") {
+        if input.starts_with(':') {
             vec![InputElement::Definition(input.to_lowercase())]
         } else {
             input
                 .to_lowercase()
-                .split(" ")
+                .split(' ')
                 .flat_map(|part| match self.definitions.get(part) {
                     Some(parts) => parts.clone(),
                     _ => vec![part.to_string()],
@@ -161,7 +162,7 @@ impl Forth {
                     Method::Over => stack_len - 2,
                     _ => stack_len - 1,
                 };
-                let last_value = self.stack.iter().nth(index).unwrap().clone();
+                let last_value = *self.stack.get(index).unwrap();
                 self.stack.push(last_value);
             }
             Method::Drop => {
@@ -177,19 +178,27 @@ impl Forth {
     }
 
     fn define(&mut self, input: String) -> ForthResult {
-        if !input.ends_with(";") {
+        if !input.ends_with(';') {
             return Err(Error::InvalidWord);
         }
         let input: Vec<String> = input[2..input.len() - 2]
-            .split(" ")
+            .split(' ')
             .map(|c| c.to_string())
             .collect();
         let command = &input.first().unwrap();
-        if let Ok(_) = command.parse::<Value>() {
+        if command.parse::<Value>().is_ok() {
             return Err(Error::InvalidWord);
         }
         let args: Vec<String> = input.iter().skip(1).map(|c| c.to_string()).collect();
-        self.definitions.insert(command.to_string(), args);
+        let parts = match self.definitions.get(args.first().unwrap()) {
+            Some(parts) => parts
+                .clone()
+                .into_iter()
+                .chain(args.into_iter().skip(1).collect::<Vec<String>>())
+                .collect(),
+            _ => args,
+        };
+        self.definitions.insert((*command).to_string(), parts);
         Ok(())
     }
 }
