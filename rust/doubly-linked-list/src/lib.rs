@@ -1,36 +1,35 @@
+use std::marker::PhantomData;
+use std::ptr::null_mut;
+
 mod pre_implemented;
 
-use std::ptr::NonNull;
-
-type MutNode<T> = Option<NonNull<Node<T>>>;
-
 struct Node<T> {
-    next: MutNode<T>,
-    prev: MutNode<T>,
-    data: T,
-}
-
-impl<T> Node<T> {
-    fn new(data: T) -> Self {
-        Self {
-            data,
-            next: None,
-            prev: None,
-        }
-    }
+    next: *mut Node<T>,
+    prev: *mut Node<T>,
+    element: T,
 }
 
 pub struct LinkedList<T> {
-    front: MutNode<T>,
-    back: MutNode<T>,
+    first: *mut Node<T>,
+    last: *mut Node<T>,
     length: usize,
+}
+
+pub struct Cursor<'a, T> {
+    list: &'a mut LinkedList<T>,
+    node: *mut Node<T>,
+}
+
+pub struct Iter<'a, T> {
+    lifetime: PhantomData<&'a T>,
+    node: *const Node<T>,
 }
 
 impl<T> LinkedList<T> {
     pub fn new() -> Self {
         Self {
-            front: None,
-            back: None,
+            first: null_mut(),
+            last: null_mut(),
             length: 0,
         }
     }
@@ -40,82 +39,151 @@ impl<T> LinkedList<T> {
     }
 
     pub fn cursor_front(&mut self) -> Cursor<'_, T> {
-        let node = self.front;
+        let node = self.first;
         Cursor { list: self, node }
     }
 
     pub fn cursor_back(&mut self) -> Cursor<'_, T> {
-        let node = self.back;
+        let node = self.last;
         Cursor { list: self, node }
     }
 
     pub fn iter(&self) -> Iter<'_, T> {
-        let node = self.front;
-        Iter { list: self, node }
+        let node = self.first;
+        Iter {
+            lifetime: PhantomData,
+            node,
+        }
     }
 }
 
-pub struct Cursor<'a, T> {
-    list: &'a mut LinkedList<T>,
-    node: MutNode<T>,
+impl<T> Drop for LinkedList<T> {
+    fn drop(&mut self) {
+        loop {
+            if let None = self.cursor_front().take() {
+                break;
+            }
+        }
+    }
 }
 
 impl<T> Cursor<'_, T> {
     pub fn peek_mut(&mut self) -> Option<&mut T> {
-        unsafe { self.node.map(|node| &mut (*node.as_ptr()).data) }
+        unsafe {
+            if self.node.is_null() {
+                return None;
+            }
+            Some(&mut (*self.node).element)
+        }
     }
 
     pub fn next(&mut self) -> Option<&mut T> {
-        unsafe { self.node = self.node.and_then(|node| node.as_ref().next) };
-        self.peek_mut()
+        unsafe {
+            if (*self.node).next.is_null() {
+                return None;
+            }
+            let element = &mut (*(*self.node).next).element;
+            self.node = (*self.node).next;
+            Some(element)
+        }
     }
 
     pub fn prev(&mut self) -> Option<&mut T> {
-        unsafe { self.node = self.node.and_then(|node| node.as_ref().prev) };
-        self.peek_mut()
+        unsafe {
+            if (*self.node).prev.is_null() {
+                return None;
+            }
+            let element = &mut (*(*self.node).prev).element;
+            self.node = (*self.node).prev;
+            Some(element)
+        }
     }
 
     pub fn take(&mut self) -> Option<T> {
-        if self.list.length == 0 {
-            return None;
-        }
-        self.list.length -= 1;
-
         unsafe {
-            let node = self.node.unwrap();
-            let next;
-            if let Some(mut n) = node.as_ref().next {
-                n.as_mut().prev = node.as_ref().prev;
-                next = node.as_ref().next;
-            } else if let Some(mut n) = node.as_ref().prev {
-                n.as_mut().next = node.as_ref().next;
-                next = node.as_ref().prev;
-            } else {
+            if self.node.is_null() {
                 return None;
             }
-            if self.node == self.list.front {
-                self.list.front = node.as_ref().next;
-            } else if self.node == self.list.back {
-                self.list.back = node.as_ref().prev;
+            let node = Box::from_raw(self.node);
+            if node.prev.is_null() {
+                if node.next.is_null() {
+                    self.node = null_mut();
+                    self.list.first = null_mut();
+                    self.list.last = null_mut();
+                } else {
+                    self.node = node.next;
+                    self.list.first = node.next;
+                    (*node.next).prev = null_mut();
+                }
+            } else {
+                if node.next.is_null() {
+                    self.node = node.prev;
+                    self.list.last = node.prev;
+                    (*node.prev).next = null_mut();
+                } else {
+                    self.node = node.next;
+                    (*node.prev).next = node.next;
+                    (*node.next).prev = node.prev;
+                }
             }
-            let data = Box::from_raw(self.node.take().unwrap().as_ptr()).data;
-            self.node = next;
-            Some(data)
+            self.list.length -= 1;
+            Some(node.element)
         }
     }
 
-    pub fn insert_after(&mut self, _element: T) {
-        unimplemented!()
+    pub fn insert_after(&mut self, element: T) {
+        unsafe {
+            if self.list.first.is_null() {
+                let node = Box::into_raw(Box::new(Node {
+                    next: null_mut(),
+                    prev: null_mut(),
+                    element,
+                }));
+                self.list.first = node;
+                self.list.last = node;
+            } else {
+                let node = Box::into_raw(Box::new(Node {
+                    next: (*self.node).next,
+                    prev: self.node,
+                    element,
+                }));
+                if !(*node).next.is_null() {
+                    (*(*node).next).prev = node;
+                } else {
+                    self.list.last = node;
+                }
+                (*(*node).prev).next = node;
+            }
+            self.list.length += 1;
+        }
     }
 
-    pub fn insert_before(&mut self, _element: T) {
-        unimplemented!()
+    pub fn insert_before(&mut self, element: T) {
+        unsafe {
+            if self.list.first.is_null() {
+                let node = Box::into_raw(Box::new(Node {
+                    next: null_mut(),
+                    prev: null_mut(),
+                    element,
+                }));
+                self.list.first = node;
+                self.list.last = node;
+            } else {
+                let node = Box::into_raw(Box::new(Node {
+                    next: self.node,
+                    prev: (*self.node).prev,
+                    element,
+                }));
+                (*(*node).next).prev = node;
+                if !(*node).prev.is_null() {
+                    (*(*node).prev).next = node;
+                } else {
+                    self.list.first = node;
+                }
+            }
+            self.list.length += 1;
+        }
     }
-}
-
-pub struct Iter<'a, T> {
-    list: &'a LinkedList<T>,
-    node: MutNode<T>,
 }
 
 impl<'a, T> Iterator for Iter<'a, T> {
@@ -123,10 +191,12 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
     fn next(&mut self) -> Option<&'a T> {
         unsafe {
-            self.node.map(|node| {
-                self.node = node.as_ref().next;
-                &(*node.as_ptr()).data
-            })
+            if self.node.is_null() {
+                return None;
+            }
+            let element = &(*self.node).element;
+            self.node = (*self.node).next;
+            Some(element)
         }
     }
 }

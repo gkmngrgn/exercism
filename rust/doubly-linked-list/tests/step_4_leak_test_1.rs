@@ -7,7 +7,6 @@ static ALLOCATED: AtomicUsize = AtomicUsize::new(0);
 // test that removing an element via the cursor deallocates memory
 // does not check if the destructor is run
 #[test]
-#[ignore]
 fn drop_no_leak_when_removing_single_element() {
     let mut list = (0..10).collect::<LinkedList<_>>();
 

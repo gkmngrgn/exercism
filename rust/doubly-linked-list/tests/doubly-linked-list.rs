@@ -11,7 +11,6 @@ fn is_generic() {
 // ———————————————————————————————————————————————————————————
 
 #[test]
-#[ignore]
 fn basics_empty_list() {
     let list: LinkedList<i32> = LinkedList::new();
     assert_eq!(list.len(), 0);
@@ -19,7 +18,6 @@ fn basics_empty_list() {
 
 // push / pop at back ————————————————————————————————————————
 #[test]
-#[ignore]
 fn basics_single_element_back() {
     let mut list: LinkedList<i32> = LinkedList::new();
     list.push_back(5);
@@ -29,7 +27,6 @@ fn basics_single_element_back() {
 }
 
 #[test]
-#[ignore]
 fn basics_push_pop_at_back() {
     let mut list: LinkedList<i32> = LinkedList::new();
     for i in 0..10 {
@@ -45,7 +42,6 @@ fn basics_push_pop_at_back() {
 
 // push / pop at front ———————————————————————————————————————
 #[test]
-#[ignore]
 fn basics_single_element_front() {
     let mut list: LinkedList<i32> = LinkedList::new();
     list.push_front(5);
@@ -55,7 +51,6 @@ fn basics_single_element_front() {
 }
 
 #[test]
-#[ignore]
 fn basics_push_pop_at_front() {
     let mut list: LinkedList<i32> = LinkedList::new();
     for i in 0..10 {
@@ -71,7 +66,6 @@ fn basics_push_pop_at_front() {
 
 // push / pop at mixed sides —————————————————————————————————
 #[test]
-#[ignore]
 fn basics_push_front_pop_back() {
     let mut list: LinkedList<i32> = LinkedList::new();
     for i in 0..10 {
@@ -83,7 +77,6 @@ fn basics_push_front_pop_back() {
 }
 
 #[test]
-#[ignore]
 fn basics_push_back_pop_front() {
     let mut list: LinkedList<i32> = LinkedList::new();
     for i in 0..10 {
@@ -99,7 +92,6 @@ fn basics_push_back_pop_front() {
 // ———————————————————————————————————————————————————————————
 
 #[test]
-#[ignore]
 fn iter() {
     let mut list: LinkedList<i32> = LinkedList::new();
     for num in 0..10 {
@@ -116,7 +108,6 @@ fn iter() {
 // ———————————————————————————————————————————————————————————
 
 #[test]
-#[ignore]
 fn cursor_insert_before_on_empty_list() {
     // insert_after on empty list is already tested via push_back()
     let mut list = LinkedList::new();
@@ -125,7 +116,6 @@ fn cursor_insert_before_on_empty_list() {
 }
 
 #[test]
-#[ignore]
 fn cursor_insert_after_in_middle() {
     let mut list = (0..10).collect::<LinkedList<_>>();
 
@@ -147,7 +137,6 @@ fn cursor_insert_after_in_middle() {
 }
 
 #[test]
-#[ignore]
 fn cursor_insert_before_in_middle() {
     let mut list = (0..10).collect::<LinkedList<_>>();
 
@@ -170,7 +159,6 @@ fn cursor_insert_before_in_middle() {
 
 // "iterates" via next() and checks that it visits the right elements
 #[test]
-#[ignore]
 fn cursor_next_and_peek() {
     let mut list = (0..10).collect::<LinkedList<_>>();
     let mut cursor = list.cursor_front();
@@ -186,7 +174,6 @@ fn cursor_next_and_peek() {
 
 // "iterates" via prev() and checks that it visits the right elements
 #[test]
-#[ignore]
 fn cursor_prev_and_peek() {
     let mut list = (0..10).collect::<LinkedList<_>>();
     let mut cursor = list.cursor_back();
@@ -202,7 +189,6 @@ fn cursor_prev_and_peek() {
 
 // removes all elements starting from the middle
 #[test]
-#[ignore]
 fn cursor_take() {
     let mut list = (0..10).collect::<LinkedList<_>>();
     let mut cursor = list.cursor_front();
@@ -225,7 +211,6 @@ fn cursor_take() {
 // may pass for incorrect programs if double frees happen
 // exactly as often as destructor leaks
 #[test]
-#[ignore]
 fn drop_no_double_frees() {
     use std::cell::Cell;
     struct DropCounter<'a>(&'a Cell<usize>);
@@ -250,7 +235,6 @@ fn drop_no_double_frees() {
 }
 
 #[test]
-#[ignore]
 fn drop_large_list() {
     drop((0..2_000_000).collect::<LinkedList<i32>>());
 }
@@ -266,7 +250,6 @@ fn drop_large_list() {
 
 #[cfg(feature = "advanced")]
 #[test]
-#[ignore]
 fn advanced_linked_list_is_send_sync() {
     trait AssertSend: Send {}
     trait AssertSync: Sync {}
@@ -278,7 +261,6 @@ fn advanced_linked_list_is_send_sync() {
 #[cfg(feature = "advanced")]
 #[allow(dead_code)]
 #[test]
-#[ignore]
 fn advanced_is_covariant() {
     fn a<'a>(x: LinkedList<&'static str>) -> LinkedList<&'a str> {
         x
