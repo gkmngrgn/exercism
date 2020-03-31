@@ -20,7 +20,6 @@
      when (string= (string-downcase allergen) (car a))
      return (> (logand (cdr a) score) 0)))
 
-
 (defun list (score)
   (mapcar #'car
           (remove-if-not (lambda (a)
