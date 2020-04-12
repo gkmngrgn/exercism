@@ -9,46 +9,46 @@
 
 ;; Perfect numbers tests:
 (define-test smallest-perfect-number
-  (assert-equal "perfect" (perfect-numbers:classify 6)))
+    (assert-equal "perfect" (perfect-numbers:classify 6)))
 
 (define-test medium-perfect-number
-  (assert-equal "perfect" (perfect-numbers:classify 28)))
+    (assert-equal "perfect" (perfect-numbers:classify 28)))
 
 (define-test large-perfect-number
-  (assert-equal "perfect" (perfect-numbers:classify 33550336)))
+    (assert-equal "perfect" (perfect-numbers:classify 33550336)))
 
 
 ;; Abundant numbers tests:
 (define-test smallest-abundant-number
-  (assert-equal "abundant" (perfect-numbers:classify 12)))
+    (assert-equal "abundant" (perfect-numbers:classify 12)))
 
 (define-test medium-abundant-number
-  (assert-equal "abundant" (perfect-numbers:classify 30)))
+    (assert-equal "abundant" (perfect-numbers:classify 30)))
 
 (define-test large-abundant-number
-  (assert-equal "abundant" (perfect-numbers:classify 33550335)))
+    (assert-equal "abundant" (perfect-numbers:classify 33550335)))
 
 
 ;; Deficient numbers tests:
 (define-test smallest-prime-deficient-number
-  (assert-equal "deficient" (perfect-numbers:classify 2)))
+    (assert-equal "deficient" (perfect-numbers:classify 2)))
 
 (define-test smallest-non-prime-deficient-number
-  (assert-equal "deficient" (perfect-numbers:classify 1)))
+    (assert-equal "deficient" (perfect-numbers:classify 1)))
 
 (define-test medium-deficient-number
-  (assert-equal "deficient" (perfect-numbers:classify 32)))
+    (assert-equal "deficient" (perfect-numbers:classify 32)))
 
 (define-test large-deficient-number
-  (assert-equal "deficient" (perfect-numbers:classify 33550337)))
+    (assert-equal "deficient" (perfect-numbers:classify 33550337)))
 
 
 ;; Undefined values of classify tests:
 (define-test undefinded-0
-  (assert-equal NIL (perfect-numbers:classify 0)))
+    (assert-equal NIL (perfect-numbers:classify 0)))
 
 (define-test undefined-negative
-  (assert-equal NIL (perfect-numbers:classify -3)))
+    (assert-equal NIL (perfect-numbers:classify -3)))
 
 #-xlisp-test
 (let ((*print-errors* t)
