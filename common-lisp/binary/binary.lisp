@@ -5,8 +5,8 @@
 (in-package :binary)
 
 (defun to-decimal (input)
-  (let* ((exponent 0)
-         (binaries (reverse (mapcar #'digit-char-p (coerce input 'list)))))
+  (let ((binaries (reverse (mapcar #'digit-char-p (coerce input 'list))))
+        (exponent 0))
     (reduce #'+ (loop for b in binaries
                       if (and (not (null b))
                               (< b 2))
