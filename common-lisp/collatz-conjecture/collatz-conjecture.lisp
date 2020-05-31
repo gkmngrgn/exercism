@@ -6,10 +6,8 @@
 
 (defun collatz (n)
   (if (> n 0)
-      (let ((step 0))
-        (loop while (> n 1)
-              do (progn (setf step (1+ step))
-                        (setf n (if (evenp n)
-                                    (/ n 2)
-                                    (1+ (* n 3))))))
-        step)))
+      (loop while (> n 1)
+            counting t
+            do (setf n (if (evenp n)
+                           (/ n 2)
+                           (1+ (* n 3)))))))
