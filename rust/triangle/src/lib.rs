@@ -1,18 +1,15 @@
-use std::collections::BTreeSet;
-
 pub struct Triangle(usize);
 
 impl Triangle {
-    pub fn build(sides: [u64; 3]) -> Option<Triangle> {
-        let mut different_sides = BTreeSet::new();
+    pub fn build(sides: [u64; 3]) -> Option<Self> {
         let sum: u64 = sides.iter().sum();
-        for side in sides.iter() {
-            if side == &0 || sum - side < *side {
-                return None;
-            }
-            different_sides.insert(side);
+        if sides.iter().filter(|&s| sum - s <= *s).count() > 0 {
+            return None;
         }
-        Some(Triangle(different_sides.len()))
+        let mut sides = sides.to_vec();
+        sides.sort();
+        sides.dedup();
+        Some(Self(sides.len()))
     }
 
     pub fn is_equilateral(&self) -> bool {
