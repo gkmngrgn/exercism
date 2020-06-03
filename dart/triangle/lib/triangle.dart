@@ -2,7 +2,7 @@ class Triangle {
   int differentSides(num i, num j, num k) {
     var sum = i + j + k;
     var differentSides = [i, j, k].toSet();
-    var sidesAreValid = [i, j, k].where((s) => s == 0 || sum - s <= s).isEmpty;
+    var sidesAreValid = [i, j, k].where((s) => sum - s <= s).isEmpty;
     return (sidesAreValid) ? differentSides.length : 0;
   }
 
