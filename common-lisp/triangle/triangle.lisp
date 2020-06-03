@@ -10,7 +10,7 @@
          (different-sides (remove-duplicates sides))
          (sum (reduce #'+ sides)))
     (labels ((count-invalid-sides (counter side)
-               (if (or (zerop side) (<= (- sum side) side))
+               (if (<= (- sum side) side)
                    (1+ counter)
                    counter))
              (different-sides ()
