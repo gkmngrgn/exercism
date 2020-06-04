@@ -24,12 +24,11 @@ fn calculate_group_price(books: &[u32], size: usize) -> u32 {
 }
 
 fn calculate_price(size: usize) -> u32 {
-    let discount: u32 = match size {
-        1 => 100,
-        2 => 95,
-        3 => 90,
-        4 => 80,
-        _ => 75,
-    };
-    size as u32 * 8 * discount
+    match size {
+        1 => 8 * 100,
+        2 => 8 * 2 * 95,
+        3 => 8 * 3 * 90,
+        4 => 8 * 4 * 80,
+        _ => 8 * 5 * 75,
+    }
 }
