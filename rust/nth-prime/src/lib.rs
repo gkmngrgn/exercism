@@ -15,7 +15,7 @@ fn is_prime(value: u32) -> bool {
         divisor += 6;
     }
 
-    return true;
+    true
 }
 
 pub fn nth(n: u32) -> u32 {
@@ -29,5 +29,5 @@ pub fn nth(n: u32) -> u32 {
         }
     }
 
-    return nth_prime;
+    nth_prime
 }
