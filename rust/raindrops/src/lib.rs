@@ -9,9 +9,8 @@ pub fn raindrops(n: u32) -> String {
     if n % 7 == 0 {
         result.push_str("Plong")
     }
-    return if result.len() > 0 {
-        result
-    } else {
-        n.to_string()
-    };
+    if result.is_empty() {
+        result = n.to_string()
+    }
+    result
 }
