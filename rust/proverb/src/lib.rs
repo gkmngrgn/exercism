@@ -6,7 +6,7 @@ pub fn build_proverb(list: &[&str]) -> String {
         None => String::new(),
     };
 
-    if list.len() >= 1 {
+    if !list.is_empty() {
         for index in 0..list.len() - 1 {
             current = format!(
                 "For want of a {} the {} was lost.\n",
@@ -18,5 +18,5 @@ pub fn build_proverb(list: &[&str]) -> String {
     }
     result.push_str(&last);
 
-    return result;
+    result
 }
