@@ -1,13 +1,9 @@
 const MAX_S: u32 = 64;
 
-fn validate(s: u32) {
-    if s <= 0 || s > MAX_S {
+pub fn square(s: u32) -> u64 {
+    if s == 0 || s > MAX_S {
         panic!("Square must be between 1 and 64")
     }
-}
-
-pub fn square(s: u32) -> u64 {
-    validate(s);
     u64::pow(2, s - 1)
 }
 
