@@ -8,7 +8,7 @@ fn is_prime(value: u32) -> bool {
     }
 
     let mut divisor = 6;
-    while divisor * divisor - 2 * divisor + 1 <= value {
+    while divisor * divisor - 2 * divisor < value {
         if value % (divisor - 1) == 0 || value % (divisor + 1) == 0 {
             return false;
         }
