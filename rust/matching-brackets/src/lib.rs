@@ -1,27 +1,23 @@
+const BRACKETS_OPEN: [char; 3] = ['[', '(', '{'];
+const BRACKETS_CLOSE: [char; 3] = [']', ')', '}'];
+
 pub fn brackets_are_balanced(string: &str) -> bool {
-    let brackets_open = ['[', '(', '{'];
-    let brackets_close = [']', ')', '}'];
     let mut open_brackets = String::new();
 
     for bracket in string.chars() {
-        if brackets_open.contains(&bracket) {
+        if BRACKETS_OPEN.contains(&bracket) {
             open_brackets.push(bracket);
+        } else if !BRACKETS_CLOSE.contains(&bracket) {
             continue;
-        }
-
-        if !brackets_close.contains(&bracket) {
-            continue;
-        }
-
-        if open_brackets.len() == 0
+        } else if open_brackets.is_empty()
             || open_brackets.chars().rev().next().unwrap()
-                != brackets_open[brackets_close.iter().position(|&b| b == bracket).unwrap()]
+                != BRACKETS_OPEN[BRACKETS_CLOSE.iter().position(|&b| b == bracket).unwrap()]
         {
             return false;
+        } else {
+            open_brackets.pop();
         }
-
-        open_brackets.pop();
     }
 
-    open_brackets.len() == 0
+    open_brackets.is_empty()
 }
