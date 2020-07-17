@@ -1,4 +1,4 @@
-use std::cmp::{min, Reverse};
+use std::cmp::min;
 
 #[derive(Debug)]
 pub struct HighScores {
@@ -8,13 +8,18 @@ pub struct HighScores {
 
 impl HighScores {
     pub fn new(scores: &[u32]) -> Self {
-        let mut sorted_scores = scores.to_vec();
-        sorted_scores.sort_by_key(|&x| Reverse(x));
+        let scores = scores.to_vec();
+        let mut sorted_scores = scores.clone();
+        sorted_scores.sort_by(|a, b| b.partial_cmp(a).unwrap());
 
         Self {
-            scores: scores.to_vec(),
-            sorted_scores: sorted_scores,
+            scores,
+            sorted_scores,
         }
+    }
+
+    fn length(&self) -> usize {
+        self.scores.len()
     }
 
     pub fn scores(&self) -> &[u32] {
@@ -22,20 +27,20 @@ impl HighScores {
     }
 
     pub fn latest(&self) -> Option<u32> {
-        match self.scores.len() > 0 {
-            true => Some(*self.scores.last().unwrap()),
-            false => None,
+        match self.length() {
+            0 => None,
+            len => Some(self.scores()[len - 1]),
         }
     }
 
     pub fn personal_best(&self) -> Option<u32> {
-        match self.sorted_scores.len() > 0 {
-            true => Some(*self.sorted_scores.first().unwrap()),
-            false => None,
+        match self.length() {
+            0 => None,
+            _ => Some(*self.sorted_scores.first().unwrap()),
         }
     }
 
     pub fn personal_top_three(&self) -> Vec<u32> {
-        self.sorted_scores[..min(3, self.sorted_scores.len())].to_vec()
+        self.sorted_scores[..min(3, self.length())].to_vec()
     }
 }
