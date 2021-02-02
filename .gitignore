@@ -33,3 +33,7 @@ common-lisp/**/*.sx64fsl
 common-lisp/**/*.sx32fsl
 common-lisp/**/*.wx64fsl
 common-lisp/**/*.wx32fsl
+
+# Kotlin
+kotlin/**/.gradle
+kotlin/**/build
