@@ -2,7 +2,6 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 class DndCharacter {
-
     val strength: Int = ability()
     val dexterity: Int = ability()
     val constitution: Int = ability()
@@ -16,5 +15,4 @@ class DndCharacter {
 
         fun modifier(score: Int): Int = score / 2 - 5
     }
-
 }
