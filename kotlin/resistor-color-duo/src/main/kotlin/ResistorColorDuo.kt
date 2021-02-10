@@ -1,6 +1,4 @@
 object ResistorColorDuo {
-
-    fun value(vararg colors: Color): Int {
-        TODO("Implement this to complete the task")
-    }
+    fun value(vararg colors: Color): Int =
+        Integer.parseInt(colors.take(2).map { Color.values().indexOf(it) }.joinToString(separator = ""))
 }
