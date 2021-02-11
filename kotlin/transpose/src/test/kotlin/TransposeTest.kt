@@ -1,5 +1,3 @@
-import org.junit.Rule
-import org.junit.rules.ExpectedException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -43,21 +41,41 @@ class TransposeTest {
     @Test
     fun `first line longer than second line`() {
         val lines = listOf("The fourth line.", "The fifth line.")
-        val expected = listOf("TT", "hh", "ee", "  ", "ff", "oi", "uf", "rt", "th", "h ", " l", "li", "in", "ne", "e.", ".")
+        val expected =
+            listOf("TT", "hh", "ee", "  ", "ff", "oi", "uf", "rt", "th", "h ", " l", "li", "in", "ne", "e.", ".")
         assertEquals(expected, Transpose.transpose(lines))
     }
 
     @Test
     fun `second line longer than first line`() {
         val lines = listOf("The first line.", "The second line.")
-        val expected = listOf("TT", "hh", "ee", "  ", "fs", "ie", "rc", "so", "tn", " d", "l ", "il", "ni", "en", ".e", " .")
+        val expected =
+            listOf("TT", "hh", "ee", "  ", "fs", "ie", "rc", "so", "tn", " d", "l ", "il", "ni", "en", ".e", " .")
         assertEquals(expected, Transpose.transpose(lines))
     }
 
     @Test
     fun `mixed line length`() {
         val lines = listOf("The longest line.", "A long line.", "A longer line.", "A line.")
-        val expected = listOf("TAAA", "h   ", "elll", " ooi", "lnnn", "ogge", "n e.", "glr", "ei ", "snl", "tei", " .n", "l e", "i .", "n", "e", ".")
+        val expected = listOf(
+            "TAAA",
+            "h   ",
+            "elll",
+            " ooi",
+            "lnnn",
+            "ogge",
+            "n e.",
+            "glr",
+            "ei ",
+            "snl",
+            "tei",
+            " .n",
+            "l e",
+            "i .",
+            "n",
+            "e",
+            "."
+        )
         assertEquals(expected, Transpose.transpose(lines))
     }
 
