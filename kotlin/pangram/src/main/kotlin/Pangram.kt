@@ -1,6 +1,5 @@
-object Pangram {
+const val LETTER_COUNT: Int = 26
 
-    fun isPangram(input: String): Boolean {
-        TODO("Implement this function to complete the task")
-    }
+object Pangram {
+    fun isPangram(input: String): Boolean = input.toLowerCase().toSet().filter { it.isLetter() }.count() == LETTER_COUNT
 }
