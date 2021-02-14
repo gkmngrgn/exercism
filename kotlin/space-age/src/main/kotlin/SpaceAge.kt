@@ -1,13 +1,14 @@
-class SpaceAge {
+import kotlin.math.roundToLong
 
-    // TODO: Implement proper constructor
+class SpaceAge(private val seconds: Int) {
+    private fun calculate(exp: Double): Double = (seconds / (31557600 * exp) * 100).roundToLong() / 100.0
 
-    fun onEarth(): Double = TODO("Implement this function to complete the task")
-    fun onMercury(): Double = TODO("Implement this function to complete the task")
-    fun onVenus(): Double = TODO("Implement this function to complete the task")
-    fun onMars(): Double = TODO("Implement this function to complete the task")
-    fun onJupiter(): Double = TODO("Implement this function to complete the task")
-    fun onSaturn(): Double = TODO("Implement this function to complete the task")
-    fun onUranus(): Double = TODO("Implement this function to complete the task")
-    fun onNeptune(): Double = TODO("Implement this function to complete the task")
+    fun onEarth(): Double = calculate(1.0)
+    fun onMercury(): Double = calculate(0.2408467)
+    fun onVenus(): Double = calculate(0.61519726)
+    fun onMars(): Double = calculate(1.8808158)
+    fun onJupiter(): Double = calculate(11.862615)
+    fun onSaturn(): Double = calculate(29.447498)
+    fun onUranus(): Double = calculate(84.016846)
+    fun onNeptune(): Double = calculate(164.79132)
 }
