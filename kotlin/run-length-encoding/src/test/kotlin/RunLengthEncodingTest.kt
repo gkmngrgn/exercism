@@ -1,10 +1,7 @@
-import org.junit.Rule
-import org.junit.rules.ExpectedException
+import RunLengthEncoding.decode
+import RunLengthEncoding.encode
 import kotlin.test.Test
 import kotlin.test.assertEquals
-
-import RunLengthEncoding.encode
-import RunLengthEncoding.decode
 
 class RunLengthEncodingTest {
 
@@ -19,7 +16,7 @@ class RunLengthEncodingTest {
 
     @Test
     fun `encode_single characters mixed with repeated characters`() =
-            assertEquals("12WB12W3B24WB", encode("WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB"))
+        assertEquals("12WB12W3B24WB", encode("WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB"))
 
     @Test
     fun `encode_multiple whitespace mixed in string`() = assertEquals("2 hs2q q2w2 ", encode("  hsqq qww  "))
@@ -38,7 +35,7 @@ class RunLengthEncodingTest {
 
     @Test
     fun `decode_single characters with repeated characters`() =
-            assertEquals("WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB", decode("12WB12W3B24WB"))
+        assertEquals("WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB", decode("12WB12W3B24WB"))
 
     @Test
     fun `decode_multiple whitespace mixed in string`() = assertEquals("  hsqq qww  ", decode("2 hs2q q2w2 "))
