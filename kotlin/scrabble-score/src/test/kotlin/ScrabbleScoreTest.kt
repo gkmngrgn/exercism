@@ -10,17 +10,17 @@ class ScrabbleScoreTest(val input: String, val expectedOutput: Int) {
         @JvmStatic
         @Parameterized.Parameters(name = "{index}: scoreWord({0})={1}")
         fun data() = listOf(
-                arrayOf("a", 1),
-                arrayOf("A", 1),
-                arrayOf("f", 4),
-                arrayOf("at", 2),
-                arrayOf("zoo", 12),
-                arrayOf("street", 6),
-                arrayOf("quirky", 22),
-                arrayOf("OxyphenButazone", 41),
-                arrayOf("pinata", 8),
-                arrayOf("", 0),
-                arrayOf("abcdefghijklmnopqrstuvwxyz", 87)
+            arrayOf("a", 1),
+            arrayOf("A", 1),
+            arrayOf("f", 4),
+            arrayOf("at", 2),
+            arrayOf("zoo", 12),
+            arrayOf("street", 6),
+            arrayOf("quirky", 22),
+            arrayOf("OxyphenButazone", 41),
+            arrayOf("pinata", 8),
+            arrayOf("", 0),
+            arrayOf("abcdefghijklmnopqrstuvwxyz", 87)
         )
     }
 

@@ -1,10 +1,7 @@
 object ScrabbleScore {
+    private const val scoreMap: String = "|AEIOULNRST|DG|BCMP|FHVWY|K|||JX||QZ"
 
-    fun scoreLetter(c: Char): Int {
-        TODO("Implement this function to complete the task")
-    }
+    private fun scoreLetter(c: Char): Int = scoreMap.takeWhile { it != c }.filter { it == '|' }.count()
 
-    fun scoreWord(word: String): Int {
-        TODO("Implement this function to complete the task")
-    }
+    fun scoreWord(word: String): Int = word.toUpperCase().map { scoreLetter(it) }.sum()
 }
